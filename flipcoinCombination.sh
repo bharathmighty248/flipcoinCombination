@@ -1,38 +1,58 @@
 #!/bin/bash -x
 
-HH=0
-HT=0
-TH=0
-TT=0
+HHH=0
+HHT=0
+HTT=0
+TTT=0
+TTH=0
+THH=0
+HTH=0
+THT=0
 
-declare -A doublet
+declare -A triplet
 read -p "Enter the simulation number : " n
 i=0
 while [[ $i != $n ]]
 do
    flipcoin1=$((RANDOM%2))
    flipcoin2=$((RANDOM%2))
-   if [[ ($flipcoin1 == 1) && ($flipcoin2 == 1) ]]
+   flipcoin3=$((RANDOM%2))
+   if [[ ($flipcoin1 == 1) && ($flipcoin2 == 1) && ($flipcoin3 == 1) ]]
    then
-      HH=$(($HH + 1))
-   elif [[ ($flipcoin1 == 1) && ($flipcoin2 == 0) ]]
+      HHH=$(($HHH + 1))
+   elif [[ ($flipcoin1 == 1) && ($flipcoin2 == 1) && ($flipcoin3 == 0) ]]
    then
-      HT=$(($HT + 1))
-   elif [[ ($flipcoin1 == 0) && ($flipcoin2 == 1) ]]
+      HHT=$(($HHT + 1))
+   elif [[ ($flipcoin1 == 1) && ($flipcoin2 == 0) && ($flipcoin3 == 0) ]]
    then
-      TH=$(($TH + 1))
-   elif [[ ($flipcoin1 == 0) && ($flipcoin2 == 0) ]]
+      HTT=$(($HTT + 1))
+   elif [[ ($flipcoin1 == 0) && ($flipcoin2 == 0) && ($flipcoin3 == 0) ]]
    then
-      TT=$(($TT + 1))
+      TTT=$(($TTT + 1))
+   elif [[ ($flipcoin1 == 0) && ($flipcoin2 == 0) && ($flipcoin3 == 1) ]]
+   then
+      TTH=$(($TTH + 1))
+   elif [[ ($flipcoin1 == 0) && ($flipcoin2 == 1) && ($flipcoin3 == 1) ]]
+   then
+      THH=$(($THH + 1))
+   elif [[ ($flipcoin1 == 1) && ($flipcoin2 == 0) && ($flipcoin3 == 1) ]]
+   then
+      HTH=$(($HTH + 1))
+   elif [[ ($flipcoin1 == 0) && ($flipcoin2 == 1) && ($flipcoin3 == 0) ]]
+   then
+      THT=$(($THT + 1))
    fi
    ((i++))
 done
 
+triplet[HHH]=`echo "scale = 2; ($HHH/$n)*100" | bc`
+triplet[HHt]=`echo "scale = 2; ($HHT/$n)*100" | bc`
+triplet[HTT]=`echo "scale = 2; ($HTT/$n)*100" | bc`
+triplet[TTT]=`echo "scale = 2; ($TTT/$n)*100" | bc`
+triplet[TTH]=`echo "scale = 2; ($TTH/$n)*100" | bc`
+triplet[THH]=`echo "scale = 2; ($THH/$n)*100" | bc`
+triplet[HTH]=`echo "scale = 2; ($HTH/$n)*100" | bc`
+triplet[THT]=`echo "scale = 2; ($THT/$n)*100" | bc`
 
-doublet[HH]=`echo "scale = 2; ($HH/$n)*100" | bc`
-doublet[HT]=`echo "scale = 2; ($HT/$n)*100" | bc`
-doublet[TH]=`echo "scale = 2; ($TH/$n)*100" | bc`
-doublet[TT]=`echo "scale = 2; ($TT/$n)*100" | bc`
-
-echo doublet combinations ${!doublet[@]}
-echo combination percentages ${doublet[@]}
+echo triplet combinations ${!triplet[@]}
+echo combination percentages ${triplet[@]}
